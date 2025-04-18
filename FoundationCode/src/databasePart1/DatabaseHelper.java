@@ -48,7 +48,7 @@ public class DatabaseHelper {
 
 	private void createTables() throws SQLException {
 		String userTable = "CREATE TABLE IF NOT EXISTS cse360users (" + "id INT AUTO_INCREMENT PRIMARY KEY, "
-				+ "userName VARCHAR(255) UNIQUE, " + "password VARCHAR(255), " + "role VARCHAR(20), "
+				+ "userName VARCHAR(255) UNIQUE, " + "password VARCHAR(255), " + "role VARCHAR(255), "
 				+ "OTP VARCHAR(10), " + "isUSED BOOLEAN DEFAULT TRUE)";
 		statement.execute(userTable);
 
@@ -82,6 +82,22 @@ public class DatabaseHelper {
                 "answered BOOLEAN DEFAULT FALSE" +
                 ")";
         statement.execute(answersTable);
+        
+        String chatsTable = "CREATE TABLE IF NOT EXISTS Chats(" +
+        		"id INT AUTO_INCREMENT PRIMARY KEY, " +
+        		"roomId INT, " +
+        		"role VARCHAR(255) NOT NULL, " +
+        		"userName VARCHAR(255) NOT NULL, " +
+        		"content VARCHAR(255) NOT NULL" +
+        		")";
+        statement.execute(chatsTable);
+        
+        String chatRoomsTable = "CREATE TABLE IF NOT EXISTS ChatRooms(" +
+        		"id INT AUTO_INCREMENT PRIMARY KEY, " +
+        		"userId1 INT, " +
+        		"userId2 INT" +
+        		")";
+        statement.execute(chatRoomsTable);
 
         //Create question table
 		String questionsTable = "CREATE TABLE IF NOT EXISTS Questions (" + "id INT AUTO_INCREMENT PRIMARY KEY, "
@@ -107,6 +123,14 @@ public class DatabaseHelper {
 				
 				")";
 		statement.execute(pastReviewsTable);
+		 // Create an admin requests table
+		String adminRequestsTable = "CREATE TABLE IF NOT EXISTS AdminRequests(" +
+				"id INT AUTO_INCREMENT PRIMARY KEY, " +
+				"isOpen BOOLEAN NOT NULL, " +
+				"actionContent VARCHAR(255), " +
+				"description VARCHAR(255) NOT NULL" +
+				")";
+		statement.execute(adminRequestsTable);
 		
 		// Create a Messages Table
 		String messagesTable = "CREATE TABLE IF NOT EXISTS Messages (" + "id INT AUTO_INCREMENT PRIMARY KEY, "
