@@ -10,19 +10,25 @@ import javafx.stage.Stage;
 /**
  * This page displays a simple welcome message for the user.
  */
-
 public class InstructorHomePage {
 
     public void show(Stage primaryStage, DatabaseHelper databaseHelper, User user) {
-    	VBox layout = new VBox();
-	    layout.setStyle("-fx-alignment: center; -fx-padding: 20;");
-	    
-	    // Label to display Hello user
-	    Label userLabel = new Label("Hello, Instructor!");
-	    userLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-	    layout.getChildren().add(userLabel);
-	    
-	 // Logout button to return to login page
+        VBox layout = new VBox();
+        layout.setStyle("-fx-alignment: center; -fx-padding: 20;");
+
+        // Label to display Hello user
+        Label userLabel = new Label("Hello, Instructor!");
+        userLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+        layout.getChildren().add(userLabel);
+
+        // button to display staff/instructor messages
+        Button pmButton = new Button("Private Messages");
+        pmButton.setOnAction(e -> {
+            ChatRoomListApp chatRoomListApp = new ChatRoomListApp(databaseHelper, user);
+            chatRoomListApp.start(primaryStage);
+        });
+
+        // Logout button to return to login page
         Button logoutButton = new Button("Logout");
         logoutButton.setOnAction(e -> new UserLoginPage(databaseHelper).show(primaryStage));
 
@@ -31,13 +37,12 @@ public class InstructorHomePage {
         switchRoleButton.setOnAction(e -> new WelcomeLoginPage(databaseHelper).show(primaryStage, user));
         switchRoleButton.setVisible(user.getRole().contains(",")); // Show only if multiple roles
 
-        layout.getChildren().addAll(logoutButton, switchRoleButton);
-	    
-	    Scene userScene = new Scene(layout, 800, 400);
+        layout.getChildren().addAll(pmButton, logoutButton, switchRoleButton);
 
-	    // Set the scene to primary stage
-	    primaryStage.setScene(userScene);
-	    primaryStage.setTitle("User Page");
-    	
+        Scene userScene = new Scene(layout, 800, 400);
+
+        // Set the scene to primary stage
+        primaryStage.setScene(userScene);
+        primaryStage.setTitle("Instructor Home Page");
     }
 }
