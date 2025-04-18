@@ -123,6 +123,14 @@ public class DatabaseHelper {
 				
 				")";
 		statement.execute(pastReviewsTable);
+		 // Create an admin requests table
+		String adminRequestsTable = "CREATE TABLE IF NOT EXISTS AdminRequests(" +
+				"id INT AUTO_INCREMENT PRIMARY KEY, " +
+				"isOpen BOOLEAN NOT NULL, " +
+				"actionContent VARCHAR(255), " +
+				"description VARCHAR(255) NOT NULL" +
+				")";
+		statement.execute(adminRequestsTable);
 		
 		// Create a Messages Table
 		String messagesTable = "CREATE TABLE IF NOT EXISTS Messages (" + "id INT AUTO_INCREMENT PRIMARY KEY, "
