@@ -44,8 +44,23 @@ public class AdminRequest {
         }
 	}
 	
+	public void deleteRequest(DatabaseHelper dbHelper) throws SQLException {
+        String sql = "DELETE FROM AdminRequests WHERE id = ?";
+        try (PreparedStatement pstmt = dbHelper.getConnection().prepareStatement(sql)) {
+            pstmt.setInt(1, this.id);
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Deleting answer failed, no rows affected.");
+            }
+        }
+	}
+	
 	public String getDescription() {
 		return this.description;
+	}
+	
+	public int getId() {
+		return this.id;
 	}
 	
 	public void updateDescripion() {
