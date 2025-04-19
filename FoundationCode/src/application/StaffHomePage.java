@@ -1,5 +1,7 @@
 package application;
 
+import java.util.ArrayList;
+
 import databasePart1.DatabaseHelper;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -42,6 +44,13 @@ public class StaffHomePage {
             ChatRoomListApp chatRoomListApp = new ChatRoomListApp(databaseHelper, user);
             chatRoomListApp.start(primaryStage);
         });
+        
+        
+        Button adminRequestsButton = new Button("Admin Requests");
+        adminRequestsButton.setOnAction(e-> {
+        	ArrayList<String[]> adminRequestList = databaseHelper.listAdminRequests();
+        	new AdminRequestList().show(primaryStage, databaseHelper, adminRequestList);
+        });
 
         // Logout button to return to login page
         Button logoutButton = new Button("Logout");
@@ -52,7 +61,7 @@ public class StaffHomePage {
         switchRoleButton.setOnAction(e -> new WelcomeLoginPage(databaseHelper).show(primaryStage, user));
         switchRoleButton.setVisible(user.getRole().contains(",")); // Show only if multiple roles
 
-        layout.getChildren().addAll(toQuestion, pmButton, logoutButton, switchRoleButton);
+        layout.getChildren().addAll(toQuestion, pmButton, adminRequestsButton, logoutButton, switchRoleButton);
 
         Scene userScene = new Scene(layout, 800, 400);
 
