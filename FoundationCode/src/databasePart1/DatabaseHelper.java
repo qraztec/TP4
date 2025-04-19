@@ -313,6 +313,76 @@ public class DatabaseHelper {
 			return null;
 		}
 	}
+	
+	public ArrayList<String[]> listAdminRequests() {
+		String query = "SELECT isOpen, actionContent, description, id from AdminRequests";
+		ArrayList<String[]> returnList = new ArrayList<>();
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				boolean isOpen = rs.getBoolean("isOpen");
+				String actionContent = rs.getString("actionContent");
+				String description = rs.getString("description");
+				int id = rs.getInt("id");
+				String[] returnString = {String.valueOf(isOpen), actionContent, description, Integer.toString(id)};
+				returnList.add(returnString);
+			}
+			return returnList;
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public String[] getAdminRequest(int id) {
+	    String query = 
+	        "SELECT isOpen, actionContent, description, id " +
+	        "FROM AdminRequests " +
+	        "WHERE id = ?";
+	    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+	        pstmt.setInt(1, id);
+	        ResultSet rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            String isOpen        = Boolean.toString(rs.getBoolean("isOpen"));
+	            String actionContent = rs.getString("actionContent");
+	            String description   = rs.getString("description");
+	          
+	            return new String[] { isOpen, actionContent, description, String.valueOf(id)};
+	        } else {
+	            return null;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
+	
+	public void closeAdminRequest(int id, String actionContent) {
+		String query = "UPDATE AdminRequests SET isOpen = false, actionContent = ? where id = ?";
+		try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+			pstmt.setString(1, actionContent);
+			pstmt.setInt(2, id);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void reopenAdminRequest(int id, String newDescription) {
+	    String query = "UPDATE AdminRequests SET isOpen = true, description = ? WHERE id = ?";
+	    try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+	        pstmt.setString(1, newDescription);
+	        pstmt.setInt(2, id);
+	        pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+
+	
+	
+
 
 	// Checks if a user already exists in the database based on their userName.
 	public boolean doesUserExist(String userName) {
