@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
+
 /**
  * AdminPage class represents the user interface for the admin user.
  * This page displays a simple welcome message for the admin.
@@ -61,10 +62,16 @@ public class AdminHomePage {
 	    	ArrayList<String[]> userList = databaseHelper.listUsers(); // prints list of users
 	    	new UserList().show(primaryStage, databaseHelper, userList);
 	    });
+        
+        Button adminRequestsButton = new Button("Admin Requests");
+        adminRequestsButton.setOnAction(e-> {
+        	ArrayList<String[]> adminRequestList = databaseHelper.listAdminRequests();
+        	new AdminRequestList().show(primaryStage, databaseHelper, adminRequestList);
+        });
 	    
 	    
 	    layout.setStyle("-fx-padding: 20; -fx-alignment: center;");
-	    layout.getChildren().addAll(adminLabel, deleteLabel, deleteUser, deleteButton, listUsersButton); // add all
+	    layout.getChildren().addAll(adminLabel, deleteLabel, deleteUser, deleteButton, listUsersButton, adminRequestsButton); // add all
 	    Scene adminScene = new Scene(layout, 800, 400);
 
 	 // Logout button to return to login page
